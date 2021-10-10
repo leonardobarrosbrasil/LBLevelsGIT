@@ -1,5 +1,9 @@
 package lb.levels.utils;
 
+import org.bukkit.OfflinePlayer;
+
+import java.util.UUID;
+
 public class FunctionsManager {
 
     public boolean isInteger(String value) {
@@ -9,5 +13,9 @@ public class FunctionsManager {
             return false;
         }
         return true;
+    }
+
+    public UUID getUUID(OfflinePlayer player) {
+        return player.getUniqueId();
     }
 }

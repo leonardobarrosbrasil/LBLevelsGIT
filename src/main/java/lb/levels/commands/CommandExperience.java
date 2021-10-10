@@ -21,7 +21,7 @@ public class CommandExperience implements CommandExecutor {
 
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command arg1, @NotNull String arg2, String[] args) {
         if (args.length == 0) {
-            if (!sender.hasPermission("lb.admin.fragments")) {
+            if (!sender.hasPermission("lb.admin.exp")) {
                 sender.sendMessage("§cVocê não tem permissão para fazer isto.");
                 return true;
             }
@@ -38,80 +38,101 @@ public class CommandExperience implements CommandExecutor {
 
     private void args3(CommandSender sender, String[] args) {
         OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
-        int value;
         switch (args[0]) {
             case "definir":
-                if (!MainLevels.getPlugin().getFunctions().isInteger(args[2])) {
-                    sender.sendMessage("§cA experiência precisa ser um número.");
-                    return;
-                }
-                value = Integer.parseInt(args[2]);
-                if (value > 100000) {
-                    sender.sendMessage("§cA experiência precisa ser inferior a 100001.");
-                    return;
-                }
-                if (value < 1) {
-                    sender.sendMessage("§cA experiência precisa ser superior a 0.");
-                    return;
-                }
-                Bukkit.getScheduler().runTaskAsynchronously(MainLevels.getPlugin(), () -> {
-                    try {
-                        MainEngines.getPlugin().getMysql().setExp(target.getUniqueId(), value);
-                        sender.sendMessage("§aVocê definiu a experiência de " + target.getName() + " para " + value + ".");
-                    } catch (NullPointerException ex) {
-                        sender.sendMessage("§cJogador não encontrado.");
+                if (MainEngines.getPlugin().getManager().hasCache(target.getUniqueId())) {
+                    if (!args[2].matches("^[0-9]*$") || Integer.parseInt(args[2]) > 100000 || Integer.parseInt(args[2]) <= 0) {
+                        sender.sendMessage("§cA experiência precisa ser um número válido.");
+                        return;
                     }
-                });
+                    MainEngines.getPlugin().getManager().getCache(target.getUniqueId()).setExp(Integer.parseInt(args[2]));
+                    MainEngines.getPlugin().getFunctions().isElegible(target.getUniqueId());
+                    sender.sendMessage("§aVocê definiu a experiência de " + target.getName() + " para " + args[2] + ".");
+                } else {
+                    if (!args[2].matches("^[0-9]*$") || Integer.parseInt(args[2]) > 100000 || Integer.parseInt(args[2]) <= 0) {
+                        sender.sendMessage("§cA experiência precisa ser um número válido.");
+                        return;
+                    }
+                    Bukkit.getScheduler().runTaskAsynchronously(MainLevels.getPlugin(), () -> {
+                        try {
+                            MainEngines.getPlugin().getMysql().setExp(target.getUniqueId(), Integer.parseInt(args[2]));
+                            sender.sendMessage("§aVocê definiu a experiência de " + target.getName() + " para " + args[2] + ".");
+                        } catch (NullPointerException ex) {
+                            sender.sendMessage("§cJogador não encontrado.");
+                        }
+                    });
+                    MainEngines.getPlugin().getFunctions().isElegible(target.getUniqueId());
+                }
                 break;
             case "adicionar":
-                if (!MainLevels.getPlugin().getFunctions().isInteger(args[2])) {
-                    sender.sendMessage("§cA experiência precisa ser um número.");
-                    return;
-                }
-                value = Integer.parseInt(args[2]);
-                if (value > 100000) {
-                    sender.sendMessage("§cA experiência precisa ser inferior a 100001.");
-                    return;
-                }
-                if (value < 1) {
-                    sender.sendMessage("§cA experiência precisa ser superior a 0.");
-                    return;
-                }
-                Bukkit.getScheduler().runTaskAsynchronously(MainLevels.getPlugin(), () -> {
-                    try {
-                        if (MainEngines.getPlugin().getMysql().getDatas(target.getUniqueId()).getExp() + value > 100000) {
-                            sender.sendMessage("§cA experiência atual do jogador somado ao valor é superior a 100000.");
-                            return;
-                        }
-                        MainEngines.getPlugin().getMysql().setExp(target.getUniqueId(), MainEngines.getPlugin().getMysql().getDatas(target.getUniqueId()).getLevel() + value);
-                        sender.sendMessage("§aVocê adicionou " + value + " de experiência para " + target.getName() + ".");
-                    } catch (NullPointerException ex) {
-                        sender.sendMessage("§cJogador não encontrado.");
+                if (MainEngines.getPlugin().getManager().hasCache(target.getUniqueId())) {
+                    if (!args[2].matches("^[0-9]*$") || Integer.parseInt(args[2]) > 100000 || Integer.parseInt(args[2]) <= 0) {
+                        sender.sendMessage("§cA experiência precisa ser um número válido.");
+                        return;
                     }
-                });
+                    int value = Integer.parseInt(args[2]);
+                    if (MainEngines.getPlugin().getManager().getCache(target.getUniqueId()).getExp() + value > 100000) {
+                        sender.sendMessage("§cO valor somado a experiência atual do jogador é superior a 100000.");
+                        return;
+                    }
+                    MainEngines.getPlugin().getManager().getCache(target.getUniqueId()).setExp((int) (MainEngines.getPlugin().getManager().getCache(target.getUniqueId()).getExp() + value));
+                    MainEngines.getPlugin().getFunctions().isElegible(target.getUniqueId());
+                    sender.sendMessage("§aVocê adicionou " + args[2] + " de experiência para " + target.getName() + ".");
+                } else {
+                    if (!args[2].matches("^[0-9]*$") || Integer.parseInt(args[2]) > 100000 || Integer.parseInt(args[2]) <= 0) {
+                        sender.sendMessage("§cA experiência precisa ser um número válido.");
+                        return;
+                    }
+                    int value = Integer.parseInt(args[2]);
+                    Bukkit.getScheduler().runTaskAsynchronously(MainLevels.getPlugin(), () -> {
+                        try {
+                            if (MainEngines.getPlugin().getMysql().getData(target.getUniqueId()).getExp() + value > 100000) {
+                                sender.sendMessage("§cO valor somado a experiência atual do jogador é superior a 100000.");
+                                return;
+                            }
+                            MainEngines.getPlugin().getMysql().setExp(target.getUniqueId(), MainEngines.getPlugin().getMysql().getData(target.getUniqueId()).getExp() + value);
+                            sender.sendMessage("§aVocê adicionou " + value + " de experiência(s) para " + target.getName() + ".");
+                        } catch (NullPointerException ex) {
+                            sender.sendMessage("§cJogador não encontrado.");
+                        }
+                    });
+                    MainEngines.getPlugin().getFunctions().isElegible(target.getUniqueId());
+                }
                 break;
             case "remover":
-                if (!MainLevels.getPlugin().getFunctions().isInteger(args[2])) {
-                    sender.sendMessage("§cA experiência precisa ser um número.");
-                    return;
-                }
-                value = Integer.parseInt(args[2]);
-                if (value < 1) {
-                    sender.sendMessage("§cA experiência precisa ser superior a 0.");
-                    return;
-                }
-                Bukkit.getScheduler().runTaskAsynchronously(MainLevels.getPlugin(), () -> {
-                    try {
-                        if (MainEngines.getPlugin().getMysql().getDatas(target.getUniqueId()).getExp() < value) {
-                            sender.sendMessage("§cA experiência atual do jogador é inferior a " + value + ".");
-                            return;
-                        }
-                        MainEngines.getPlugin().getMysql().setExp(target.getUniqueId(), MainEngines.getPlugin().getMysql().getDatas(target.getUniqueId()).getExp() - value);
-                        sender.sendMessage("§aVocê removeu " + value + " de experiência de " + target.getName() + ".");
-                    } catch (NullPointerException ex) {
-                        sender.sendMessage("§cJogador não encontrado.");
+                if (MainEngines.getPlugin().getManager().hasCache(target.getUniqueId())) {
+                    if (!args[2].matches("^[0-9]*$") || Integer.parseInt(args[2]) > 100000 || Integer.parseInt(args[2]) <= 0) {
+                        sender.sendMessage("§cA experiência precisa ser um número válido.");
+                        return;
                     }
-                });
+                    int value = Integer.parseInt(args[2]);
+                    if (MainEngines.getPlugin().getManager().getCache(target.getUniqueId()).getExp() < value) {
+                        sender.sendMessage("§cO valor é superior a experiência atual do jogador.");
+                        return;
+                    }
+                    MainEngines.getPlugin().getManager().getCache(target.getUniqueId()).setExp(MainEngines.getPlugin().getManager().getCache(target.getUniqueId()).getExp() - value);
+                    MainEngines.getPlugin().getFunctions().isElegible(target.getUniqueId());
+                    sender.sendMessage("§aVocê removeu " + value + " de experiência de " + target.getName() + ".");
+                } else {
+                    if (!args[2].matches("^[0-9]*$") || Integer.parseInt(args[2]) > 100000 || Integer.parseInt(args[2]) <= 0) {
+                        sender.sendMessage("§cA experiência precisa ser um número válido.");
+                        return;
+                    }
+                    int value = Integer.parseInt(args[2]);
+                    Bukkit.getScheduler().runTaskAsynchronously(MainLevels.getPlugin(), () -> {
+                        try {
+                            if (MainEngines.getPlugin().getMysql().getData(target.getUniqueId()).getExp() < value) {
+                                sender.sendMessage("§cO valor é superior a experiência atual do jogador.");
+                                return;
+                            }
+                            MainEngines.getPlugin().getMysql().setExp(target.getUniqueId(), MainEngines.getPlugin().getMysql().getData(target.getUniqueId()).getExp() - value);
+                            sender.sendMessage("§aVocê removeu " + value + " de experiência de " + target.getName() + ".");
+                        } catch (NullPointerException ex) {
+                            sender.sendMessage("§cJogador não encontrado.");
+                        }
+                    });
+                    MainEngines.getPlugin().getFunctions().isElegible(target.getUniqueId());
+                }
                 break;
             default:
                 sender.sendMessage("§cArgumentos inválidos.");

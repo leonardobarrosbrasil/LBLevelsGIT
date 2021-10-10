@@ -9,6 +9,6 @@ commands:
   nivel:
     permission: lb.admin.level
     permission-message: "§cVocê não tem permissão para fazer isto."
-  exp:
+  experienciax:
     permission: lb.admin.exp
     permission-message: "§cVocê não tem permissão para fazer isto."
