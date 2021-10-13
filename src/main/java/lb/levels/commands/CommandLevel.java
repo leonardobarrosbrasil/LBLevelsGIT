@@ -55,7 +55,7 @@ public class CommandLevel implements CommandExecutor {
                     }
                     Bukkit.getScheduler().runTaskAsynchronously(MainLevels.getPlugin(), () -> {
                         try {
-                            MainEngines.getPlugin().getMysql().setLevel(target.getUniqueId(), Integer.parseInt(args[2]));
+                            MainEngines.getPlugin().getMySQL().setLevel(target.getUniqueId(), Integer.parseInt(args[2]));
                             sender.sendMessage("§aVocê definiu o nível de " + target.getName() + " para " + args[2] + ".");
                         } catch (NullPointerException ex) {
                             sender.sendMessage("§cJogador não encontrado.");
@@ -74,8 +74,7 @@ public class CommandLevel implements CommandExecutor {
                         sender.sendMessage("§cO valor somado ao nível atual do jogador é superior a 1000.");
                         return;
                     }
-                    MainEngines.getPlugin().getManager().getCache(target.getUniqueId()).setLevel(MainEngines.getPlugin().getManager().getCache(target.getUniqueId()).getLevel() + value)
-                    ;
+                    MainEngines.getPlugin().getManager().getCache(target.getUniqueId()).setLevel(MainEngines.getPlugin().getManager().getCache(target.getUniqueId()).getLevel() + value);
                     sender.sendMessage("§aVocê adicionou " + value + " níveis para " + target.getName() + ".");
                 } else {
                     if (args[2].matches("^[0-9]*$") || Integer.parseInt(args[2]) > 1000 || Integer.parseInt(args[2]) <= 0) {
@@ -85,11 +84,11 @@ public class CommandLevel implements CommandExecutor {
                     int value = Integer.parseInt(args[2]);
                     Bukkit.getScheduler().runTaskAsynchronously(MainLevels.getPlugin(), () -> {
                         try {
-                            if (MainEngines.getPlugin().getMysql().getData(target.getUniqueId()).getLevel() + value > 1000) {
+                            if (MainEngines.getPlugin().getMySQL().getData(target.getUniqueId()).getLevel() + value > 1000) {
                                 sender.sendMessage("§cO valor somado ao nível atual do jogador é superior a 1000.");
                                 return;
                             }
-                            MainEngines.getPlugin().getMysql().setLevel(target.getUniqueId(), MainEngines.getPlugin().getMysql().getData(target.getUniqueId()).getLevel() + value);
+                            MainEngines.getPlugin().getMySQL().setLevel(target.getUniqueId(), MainEngines.getPlugin().getMySQL().getData(target.getUniqueId()).getLevel() + value);
                             sender.sendMessage("§aVocê adicionou " + value + " níveis para " + target.getName() + ".");
                         } catch (NullPointerException ex) {
                             sender.sendMessage("§cJogador não encontrado.");
@@ -118,11 +117,11 @@ public class CommandLevel implements CommandExecutor {
                     int value = Integer.parseInt(args[2]);
                     Bukkit.getScheduler().runTaskAsynchronously(MainLevels.getPlugin(), () -> {
                         try {
-                            if (MainEngines.getPlugin().getMysql().getData(target.getUniqueId()).getLevel() < value) {
+                            if (MainEngines.getPlugin().getMySQL().getData(target.getUniqueId()).getLevel() < value) {
                                 sender.sendMessage("§cO valor é superior ao nível atual do jogador.");
                                 return;
                             }
-                            MainEngines.getPlugin().getMysql().setLevel(target.getUniqueId(), MainEngines.getPlugin().getMysql().getData(target.getUniqueId()).getLevel() - value);
+                            MainEngines.getPlugin().getMySQL().setLevel(target.getUniqueId(), MainEngines.getPlugin().getMySQL().getData(target.getUniqueId()).getLevel() - value);
                             sender.sendMessage("§aVocê removeu " + value + " níveis de " + target.getName() + ".");
                         } catch (NullPointerException ex) {
                             sender.sendMessage("§cJogador não encontrado.");

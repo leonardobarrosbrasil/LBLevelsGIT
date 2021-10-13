@@ -19,16 +19,11 @@ public final class MainLevels extends JavaPlugin {
 
     private String pluginName;
 
-    public void registerEvents() {
-        //getServer().getPluginManager().registerEvents(new OnSendCommand(), this);
-        console.sendMessage("§a" + pluginName + ": Eventos carregados com sucesso.");
-    }
-
     public FunctionsManager functions;
 
     public void registerCommands() {
         CommandLevel level = new CommandLevel(this, "nivel");
-        CommandExperience exp = new CommandExperience(this, "experienciax");
+        CommandExperience exp = new CommandExperience(this, "exp");
         console.sendMessage("§a" + pluginName + ": Comandos carregados com sucesso.");
     }
 
@@ -37,14 +32,13 @@ public final class MainLevels extends JavaPlugin {
         instance = this;
         functions = new FunctionsManager();
         pluginName = getPlugin().getDescription().getName();
-        registerEvents();
         registerCommands();
-        console.sendMessage("§a" + pluginName + ": Plugin habilitado com sucesso.");
+        console.sendMessage("§a" + pluginName + ": Plugin carregado com sucesso.");
     }
 
     @Override
     public void onDisable() {
-        console.sendMessage("§c" + pluginName + ": Plugin desabilitado com sucesso.");
+        console.sendMessage("§c" + pluginName + ": Plugin descarregado com sucesso.");
     }
 
     public FunctionsManager getFunctions() {

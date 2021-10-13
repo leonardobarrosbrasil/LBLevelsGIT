@@ -2,13 +2,13 @@ name: LBLevels
 version: '1.0'
 main: lb.levels.main.MainLevels
 api-version: 1.16
-authors: [ Dimensions ]
+authors: [Dimensions]
 depend:
   - LBEngines
 commands:
   nivel:
     permission: lb.admin.level
     permission-message: "§cVocê não tem permissão para fazer isto."
-  experienciax:
+  exp:
     permission: lb.admin.exp
     permission-message: "§cVocê não tem permissão para fazer isto."
