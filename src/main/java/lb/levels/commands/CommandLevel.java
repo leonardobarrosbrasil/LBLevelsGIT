@@ -42,21 +42,23 @@ public class CommandLevel implements CommandExecutor {
         switch (args[0]) {
             case "definir":
                 if (MainEngines.getPlugin().getManager().hasCache(target.getUniqueId())) {
-                    if (args[2].matches("^[0-9]*$") || Integer.parseInt(args[2]) > 1000 || Integer.parseInt(args[2]) <= 0) {
+                    if (!args[2].matches("^[0-9]*$") || Integer.parseInt(args[2]) > 1000 || Integer.parseInt(args[2]) <= 0) {
                         sender.sendMessage("§cO nível precisa ser um número válido.");
                         return;
                     }
-                    MainEngines.getPlugin().getManager().getCache(target.getUniqueId()).setLevel(Integer.parseInt(args[2]));
-                    sender.sendMessage("§aVocê definiu o nível de " + target.getName() + " para " + args[2] + ".");
+                    int value = Integer.parseInt(args[2]);
+                    MainEngines.getPlugin().getManager().getCache(target.getUniqueId()).setLevel(value);
+                    sender.sendMessage("§aVocê definiu o nível de " + target.getName() + " para " + value + ".");
                 } else {
-                    if (args[2].matches("^[0-9]*$") || Integer.parseInt(args[2]) > 1000 || Integer.parseInt(args[2]) <= 0) {
+                    if (!args[2].matches("^[0-9]*$") || Integer.parseInt(args[2]) > 1000 || Integer.parseInt(args[2]) <= 0) {
                         sender.sendMessage("§cO nível precisa ser um número válido.");
                         return;
                     }
+                    int value = Integer.parseInt(args[2]);
                     Bukkit.getScheduler().runTaskAsynchronously(MainLevels.getPlugin(), () -> {
                         try {
-                            MainEngines.getPlugin().getMySQL().setLevel(target.getUniqueId(), Integer.parseInt(args[2]));
-                            sender.sendMessage("§aVocê definiu o nível de " + target.getName() + " para " + args[2] + ".");
+                            MainEngines.getPlugin().getMySQL().setLevel(target.getUniqueId(), value);
+                            sender.sendMessage("§aVocê definiu o nível de " + target.getName() + " para " + value + ".");
                         } catch (NullPointerException ex) {
                             sender.sendMessage("§cJogador não encontrado.");
                         }
@@ -65,7 +67,7 @@ public class CommandLevel implements CommandExecutor {
                 break;
             case "adicionar":
                 if (MainEngines.getPlugin().getManager().hasCache(target.getUniqueId())) {
-                    if (args[2].matches("^[0-9]*$") || Integer.parseInt(args[2]) > 1000 || Integer.parseInt(args[2]) <= 0) {
+                    if (!args[2].matches("^[0-9]*$") || Integer.parseInt(args[2]) > 1000 || Integer.parseInt(args[2]) <= 0) {
                         sender.sendMessage("§cO nível precisa ser um número válido.");
                         return;
                     }
@@ -77,7 +79,7 @@ public class CommandLevel implements CommandExecutor {
                     MainEngines.getPlugin().getManager().getCache(target.getUniqueId()).setLevel(MainEngines.getPlugin().getManager().getCache(target.getUniqueId()).getLevel() + value);
                     sender.sendMessage("§aVocê adicionou " + value + " níveis para " + target.getName() + ".");
                 } else {
-                    if (args[2].matches("^[0-9]*$") || Integer.parseInt(args[2]) > 1000 || Integer.parseInt(args[2]) <= 0) {
+                    if (!args[2].matches("^[0-9]*$") || Integer.parseInt(args[2]) > 1000 || Integer.parseInt(args[2]) <= 0) {
                         sender.sendMessage("§cO nível precisa ser um número válido.");
                         return;
                     }
@@ -98,7 +100,7 @@ public class CommandLevel implements CommandExecutor {
                 break;
             case "remover":
                 if (MainEngines.getPlugin().getManager().hasCache(target.getUniqueId())) {
-                    if (args[2].matches("^[0-9]*$") || Integer.parseInt(args[2]) > 1000 || Integer.parseInt(args[2]) <= 0) {
+                    if (!args[2].matches("^[0-9]*$") || Integer.parseInt(args[2]) > 1000 || Integer.parseInt(args[2]) <= 0) {
                         sender.sendMessage("§cO nível precisa ser um número válido.");
                         return;
                     }
@@ -110,7 +112,7 @@ public class CommandLevel implements CommandExecutor {
                     MainEngines.getPlugin().getManager().getCache(target.getUniqueId()).setLevel(MainEngines.getPlugin().getManager().getCache(target.getUniqueId()).getLevel() - value);
                     sender.sendMessage("§aVocê removeu " + value + " níveis de " + target.getName() + ".");
                 } else {
-                    if (args[2].matches("^[0-9]*$") || Integer.parseInt(args[2]) > 1000 || Integer.parseInt(args[2]) <= 0) {
+                    if (!args[2].matches("^[0-9]*$") || Integer.parseInt(args[2]) > 1000 || Integer.parseInt(args[2]) <= 0) {
                         sender.sendMessage("§cO nível precisa ser um número válido.");
                         return;
                     }
