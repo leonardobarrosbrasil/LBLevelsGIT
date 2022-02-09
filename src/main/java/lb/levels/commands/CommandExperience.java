@@ -39,7 +39,7 @@ public class CommandExperience implements CommandExecutor {
     private void args3(CommandSender sender, String[] args) {
         OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
         switch (args[0]) {
-            case "definir":
+            case "set":
                 if (MainEngines.getPlugin().getManager().hasCache(target.getUniqueId())) {
                     if (!args[2].matches("^[0-9]*$") || Integer.parseInt(args[2]) > 100000 || Integer.parseInt(args[2]) <= 0) {
                         sender.sendMessage("§cA experiência precisa ser um número válido.");
@@ -66,7 +66,7 @@ public class CommandExperience implements CommandExecutor {
                     MainEngines.getPlugin().getFunctions().isElegible(target.getUniqueId());
                 }
                 break;
-            case "adicionar":
+            case "give":
                 if (MainEngines.getPlugin().getManager().hasCache(target.getUniqueId())) {
                     if (!args[2].matches("^[0-9]*$") || Integer.parseInt(args[2]) > 100000 || Integer.parseInt(args[2]) <= 0) {
                         sender.sendMessage("§cA experiência precisa ser um número válido.");
@@ -101,7 +101,7 @@ public class CommandExperience implements CommandExecutor {
                     MainEngines.getPlugin().getFunctions().isElegible(target.getUniqueId());
                 }
                 break;
-            case "remover":
+            case "remove":
                 if (MainEngines.getPlugin().getManager().hasCache(target.getUniqueId())) {
                     if (!args[2].matches("^[0-9]*$") || Integer.parseInt(args[2]) > 100000 || Integer.parseInt(args[2]) <= 0) {
                         sender.sendMessage("§cA experiência precisa ser um número válido.");

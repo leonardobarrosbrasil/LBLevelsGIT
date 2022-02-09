@@ -15,7 +15,7 @@ import org.bukkit.util.StringUtil;
 
 public class CommandTab implements TabCompleter {
 
-    private final List<String> args1 = Arrays.asList("definir", "adicionar", "remover");
+    private final List<String> args1 = Arrays.asList("set", "give", "remove");
     private final ArrayList<String> players = new ArrayList<>();
 
     @Override

@@ -3,12 +3,15 @@ version: '1.0'
 main: lb.levels.main.MainLevels
 api-version: 1.16
 authors: [Dimensions]
-depend:
+softdepend:
   - LBEngines
 commands:
-  nivel:
+  level:
     permission: lb.admin.level
     permission-message: "§cVocê não tem permissão para fazer isto."
   exp:
+    permission: lb.admin.exp
+    permission-message: "§cVocê não tem permissão para fazer isto."
+  leveltest:
     permission: lb.admin.exp
     permission-message: "§cVocê não tem permissão para fazer isto."

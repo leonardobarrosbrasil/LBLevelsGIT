@@ -9,7 +9,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import sun.applet.Main;
 
 import java.util.Objects;
 
@@ -22,10 +21,6 @@ public class CommandLevel implements CommandExecutor {
 
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command arg1, @NotNull String arg2, String[] args) {
         if (args.length == 0) {
-            if (!sender.hasPermission("lb.admin.level")) {
-                sender.sendMessage("§cVocê não tem permissão para fazer isto.");
-                return true;
-            }
             sender.sendMessage("§cVocê pode usar /comandos para aprender a usar o comando.");
             return true;
         }
@@ -40,7 +35,7 @@ public class CommandLevel implements CommandExecutor {
     private void args3(CommandSender sender, String[] args) {
         OfflinePlayer target = Bukkit.getOfflinePlayer(args[1]);
         switch (args[0]) {
-            case "definir":
+            case "set":
                 if (MainEngines.getPlugin().getManager().hasCache(target.getUniqueId())) {
                     if (!args[2].matches("^[0-9]*$") || Integer.parseInt(args[2]) > 1000 || Integer.parseInt(args[2]) <= 0) {
                         sender.sendMessage("§cO nível precisa ser um número válido.");
@@ -65,8 +60,8 @@ public class CommandLevel implements CommandExecutor {
                     });
                 }
                 break;
-            case "adicionar":
-                if (MainEngines.getPlugin().getManager().hasCache(target.getUniqueId())) {
+            case "give":
+                if (MainEngines.getPlugin().getManager().getCache().containsKey(target.getUniqueId())) {
                     if (!args[2].matches("^[0-9]*$") || Integer.parseInt(args[2]) > 1000 || Integer.parseInt(args[2]) <= 0) {
                         sender.sendMessage("§cO nível precisa ser um número válido.");
                         return;
@@ -98,7 +93,7 @@ public class CommandLevel implements CommandExecutor {
                     });
                 }
                 break;
-            case "remover":
+            case "remove":
                 if (MainEngines.getPlugin().getManager().hasCache(target.getUniqueId())) {
                     if (!args[2].matches("^[0-9]*$") || Integer.parseInt(args[2]) > 1000 || Integer.parseInt(args[2]) <= 0) {
                         sender.sendMessage("§cO nível precisa ser um número válido.");
