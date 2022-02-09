@@ -1,6 +1,5 @@
 package lb.levels.commands;
 
-import com.sun.istack.internal.NotNull;
 import lb.engines.main.MainEngines;
 import lb.levels.commands.tab.CommandTab;
 import lb.levels.main.MainLevels;
@@ -19,7 +18,7 @@ public class CommandExperience implements CommandExecutor {
         Objects.requireNonNull(main.getCommand(command)).setTabCompleter(new CommandTab());
     }
 
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command arg1, @NotNull String arg2, String[] args) {
+    public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
         if (args.length == 0) {
             if (!sender.hasPermission("lb.admin.exp")) {
                 sender.sendMessage("§cVocê não tem permissão para fazer isto.");

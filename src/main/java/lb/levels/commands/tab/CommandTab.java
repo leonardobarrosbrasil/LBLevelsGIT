@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import com.sun.istack.internal.NotNull;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -19,7 +18,7 @@ public class CommandTab implements TabCompleter {
     private final ArrayList<String> players = new ArrayList<>();
 
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command arg1, @NotNull String arg2, String[] args) {
+    public List<String> onTabComplete(CommandSender sender, Command arg1, String arg2, String[] args) {
         final List<String> completions = new ArrayList<>();
         if (!(sender instanceof Player)) {
             return completions;
